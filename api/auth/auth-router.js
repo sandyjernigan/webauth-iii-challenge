@@ -51,8 +51,7 @@ function generateToken(user) {
   const payload = {
     sub: user.id, // sub in payload is what the token is about
     username: user.username,
-    // ...otherData, such as roles if exists
-    role: user.role
+    department: user.department
   };
 
   const options = {
