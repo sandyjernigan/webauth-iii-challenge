@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const secrets = require('../../config/secrets.js');
 
 const Users = require('../users/users-model.js');
 
@@ -14,7 +15,7 @@ router.post('/register', (req, res) => {
   Users.add(user)
     .then(saved => {
       // jwt should be generated
-      const token= generateToken(saved);
+      const token = generateToken(saved);
       res.status(201).json({user: saved, token});
     })
     .catch(error => {
@@ -28,12 +29,12 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   let { username, password } = req.body;
 
-  Users.findBy({ username })
+  Users.findbyUserName(username)
     .first()
     .then(user => {
-      if (user && bcrypt.compareSync(password, user.password)) {
+      if (user && bcrypt.compareSync(password, user.password)) { 
         // jwt should be generated
-        const token= generateToken(user);
+        const token = generateToken(user);
         res.status(200).json({
           message: `Welcome ${user.username}!`,
           token
@@ -48,6 +49,7 @@ router.post('/login', (req, res) => {
 });
 
 function generateToken(user) {
+  
   const payload = {
     sub: user.id, // sub in payload is what the token is about
     username: user.username,
@@ -58,6 +60,10 @@ function generateToken(user) {
     expiresIn: '1d', // expires in 1 day
   };
 
+  console.log("token set") 
+  console.log(payload)
+  console.log(process.env.JWT_SECRET)
+  console.log(options)
   // extract the secret away so it can be required and used where needed
   return jwt.sign(payload, process.env.JWT_SECRET, options); // this method is synchronous
 }
