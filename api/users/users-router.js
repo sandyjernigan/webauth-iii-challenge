@@ -12,7 +12,7 @@ router.get('/', restricted, (req, res) => {
 
   const { sub, department } = req.decodedToken;
 
-  if (role === 'admin') {
+  if (department === 'admin') {
     Users.find()
       .then(users => {
         res.json(users);

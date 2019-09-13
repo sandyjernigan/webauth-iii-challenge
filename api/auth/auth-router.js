@@ -60,10 +60,6 @@ function generateToken(user) {
     expiresIn: '1d', // expires in 1 day
   };
 
-  console.log("token set") 
-  console.log(payload)
-  console.log(process.env.JWT_SECRET)
-  console.log(options)
   // extract the secret away so it can be required and used where needed
   return jwt.sign(payload, process.env.JWT_SECRET, options); // this method is synchronous
 }

@@ -1,12 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const Users = require('../users/users-model.js');
+// const Users = require('../users/users-model.js');
 
 module.exports = (req, res, next) => {
-  const token =  req.headers.authorization;
-
-  console.log(token)
+  const token = req.headers.authorization;
   
   // see if there is a token
   if (token) { 
